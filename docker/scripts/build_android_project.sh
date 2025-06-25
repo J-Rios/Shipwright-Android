@@ -11,7 +11,13 @@ source ${DIR}/set_container_vars.sh
 # Setup
 IMAGE_NAME="${REGISTRY_REPO}:${IMAGE_TAG}"
 CONTAINER_NAME="android_builder_soh"
-PROJECT_PATH="${DIR}/../../"
+
+# Project Path
+if [[ -n "$GITHUB_WORKSPACE" ]]; then
+  PROJECT_PATH="$GITHUB_WORKSPACE"
+else
+  PROJECT_PATH=$(realpath "${DIR}/../../")
+fi
 
 ###############################################################################
 
@@ -20,8 +26,6 @@ if [ -z "$1" ]; then
     echo "Usage: $0 /path/to/project"
     exit 1
 fi
-
-PROJECT_PATH=$(realpath "${PROJECT_PATH}")
 
 # Check if the project path exists
 if [ ! -d "$PROJECT_PATH" ]; then
