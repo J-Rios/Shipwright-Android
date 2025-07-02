@@ -133,6 +133,10 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 }
 
+#if defined(__ANDROID__)
+#include "port/mobile/MobileImpl.h"
+#endif
+
 void SoH_ProcessDroppedFiles(std::string filePath);
 
 OTRGlobals* OTRGlobals::Instance;
@@ -1108,6 +1112,8 @@ extern "C" void InitOTR() {
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
     Ship::WiiU::Init(appShortName);
+#elif defined(__ANDROID__)
+    Ship::Mobile::Init(appShortName.c_str(), gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 #endif
 
 #ifdef _WIN32
